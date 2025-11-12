@@ -28,28 +28,65 @@
 
 ---
 
-## 📁 Estructura de Carpetas
+## 📁 Estructura de Carpetas (LIMPIA)
 
 ```
-Agenda-de-profesores/
-├── public/                    ← Frontend (HTML, CSS, JS)
-│   ├── *.html                ← Páginas
-│   ├── api/                  ← Base de datos (JSON)
-│   ├── css/                  ← Estilos
-│   ├── js/                   ← Scripts
-│   └── img/                  ← Imágenes
+/c/Users/Administrator/Desktop/agenda de profesores/
 │
-├── server.js                 ← Backend (Express)
-├── package.json              ← Dependencias
+├── public/                          ← Frontend (HTML, CSS, JS)
+│   ├── index.html                  ← Página de inicio
+│   ├── log_in.html                 ← Login/Registro
+│   ├── booking.html                ← Búsqueda de tutores
+│   ├── teacher_dashboard.html      ← Panel del profesor
+│   ├── teacher_profile.html        ← Perfil del profesor
+│   ├── student_profile.html        ← Perfil del estudiante
+│   │
+│   ├── api/                        ← Base de datos (JSON)
+│   │   ├── teachers.json           ← Lista de profesores
+│   │   └── teacher_schedules.json  ← Horarios y citas
+│   │
+│   ├── css/                        ← Estilos CSS
+│   │   ├── styles.css              ← Estilos principales
+│   │   ├── nav-bar.css             ← Navegación
+│   │   └── lottie.css              ← Animaciones
+│   │
+│   ├── js/                         ← Scripts JavaScript
+│   │   ├── log_in.js               ← Lógica de login
+│   │   └── google-calendar-config.example.js
+│   │
+│   └── img/                        ← Imágenes y assets
+│       ├── favicon.ico
+│       └── intro.json              ← Animación Lottie
 │
-├── 📚 DOCUMENTACIÓN
-│   ├── README.md             ← Lee esto primero
-│   ├── PARA_EL_EQUIPO.md     ← Instrucciones Git
-│   ├── SETUP_GUIDE.md        ← Instalación
-│   └── Otros...              ← Referencia técnica
+├── server.js                       ← Backend Express
+├── package.json                    ← Dependencias Node
+├── package-lock.json               ← Lock file
 │
-└── .gitignore                ← Configuración Git
+├── 📚 DOCUMENTACIÓN (Raíz)
+│   ├── INDEX.md                    ← Este archivo
+│   ├── README.md                   ← Documentación completa
+│   ├── PARA_EL_EQUIPO.md           ← Guía Git y colaboración
+│   ├── SETUP_GUIDE.md              ← Instalación paso a paso
+│   ├── QUICK_START.md              ← Inicio rápido (5 min)
+│   ├── SETUP.md                    ← Configuración avanzada
+│   ├── TEACHER_PANEL_GUIDE.md      ← Guía del panel
+│   ├── SYNC_ARCHITECTURE.md        ← Arquitectura técnica
+│   ├── GOOGLE_CALENDAR_SETUP.md    ← Configurar Google Calendar
+│   └── GOOGLE_CALENDAR_FEATURES.md ← Features de Google Calendar
+│
+├── .git/                           ← Repositorio Git
+├── .gitignore                      ← Archivos ignorados
+└── node_modules/                   ← Dependencias instaladas
 ```
+
+---
+
+## ✅ Estado del Proyecto (LIMPIO)
+
+- ✅ No hay carpetas duplicadas
+- ✅ Estructura clara y organizada
+- ✅ Documentación consolidada
+- ✅ Listo para compartir con el equipo
 
 ---
 
