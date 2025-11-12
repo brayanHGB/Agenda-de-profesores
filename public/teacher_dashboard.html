@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel del Profesor - Agenda de Tutorías</title>
+    <link rel="stylesheet" href="css/nav-bar.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="icon" type="image/x-icon" href="img/favicon.ico">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <style>
+        /* ===== TEACHER DASHBOARD ===== */
+        .dashboard-section {
+            max-width: 1100px;
+            margin: 60px auto 80px;
+            padding: 0 20px;
+        }
+
+        .dashboard-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .dashboard-header h1 {
+            font-size: clamp(28px, 4vw, 44px);
+            color: #000000;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 0px #e8e8e8, 1px 1px 0px #e8e8e8;
+            font-weight: bold;
+        }
+
+        .dashboard-header p {
+            color: #64748b;
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        .dashboard-container {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 40px;
+        }
+
+        /* ===== SIDEBAR ===== */
+        .dashboard-sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 26px rgba(2, 8, 23, 0.08);
+            border: 1px solid #e2e8f0;
+        }
+
+        .card:hover {
+            box-shadow: 0 12px 32px rgba(2, 8, 23, 0.12);
+            transform: translateY(-2px);
+        }
+
+        .teacher-info-card {
+            background: white;
+            border: 1px solid #e2e8f0;
+        }
+
+        .teacher-profile {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .teacher-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: #f1f5f9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+            margin: 0 auto 14px;
+            border: 2px solid #e2e8f0;
+        }
+
+        .teacher-info-card h3 {
+            font-size: 18px;
+            color: #0f172a;
+            margin-bottom: 4px;
+            font-weight: 800;
+        }
+
+        .teacher-specialty {
+            color: #64748b;
+            font-weight: 500;
+            font-size: 13px;
+            margin-bottom: 12px;
+        }
+
+        .teacher-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 28px;
+            font-weight: 800;
+            color: #0f172a;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: #94a3b8;
+            margin-top: 4px;
+            font-weight: 500;
+        }
+
+        /* ===== SCHEDULE MANAGER ===== */
+        .schedule-card h3 {
+            font-size: 16px;
+            color: #0f172a;
+            margin-bottom: 16px;
+            font-weight: 700;
+        }
+
+        .schedule-form {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .form-row-schedule {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .form-group-schedule {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .form-group-schedule label {
+            font-weight: 600;
+            color: #0f172a;
+            font-size: 13px;
+        }
+
+        .form-group-schedule input,
+        .form-group-schedule select {
+            padding: 10px 12px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            background: white;
+            color: #0f172a;
+        }
+
+        .form-group-schedule input:focus,
+        .form-group-schedule select:focus {
+            outline: none;
+            border-color: #cbd5e1;
+            box-shadow: 0 0 0 3px rgba(203, 213, 225, 0.1);
+            background: white;
+        }
+
+        .add-schedule-btn {
+            background: #0f172a;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 12px 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 14px;
+        }
+
+        .add-schedule-btn:hover {
+            background: #1e293b;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(15, 23, 42, 0.2);
+        }
+
+        /* ===== MAIN CONTENT ===== */
+        .dashboard-main {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 8px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .tab-btn {
+            background: none;
+            border: none;
+            padding: 12px 16px;
+            font-size: 15px;
+            font-weight: 600;
+            color: #94a3b8;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            border-bottom: 3px solid transparent;
+        }
+
+        .tab-btn.active {
+            color: #0f172a;
+            border-bottom-color: #0f172a;
+        }
+
+        .tab-btn:hover {
+            color: #0f172a;
+        }
+
+        .tab-content {
+            display: none;
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 10px 26px rgba(2, 8, 23, 0.08);
+            border: 1px solid #e2e8f0;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .tab-content h3 {
+            margin-bottom: 20px;
+            color: #0f172a;
+            font-weight: 800;
+            font-size: 18px;
+        }
+
+        /* ===== AVAILABLE HOURS LIST ===== */
+        .hours-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .hour-item {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 14px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .hour-item:hover {
+            background: #f1f5f9;
+            border-color: #cbd5e1;
+            box-shadow: 0 4px 12px rgba(2, 8, 23, 0.06);
+        }
+
+        .hour-info {
+            flex: 1;
+        }
+
+        .hour-day {
+            font-weight: 700;
+            color: #0f172a;
+            text-transform: capitalize;
+            margin-bottom: 4px;
+            font-size: 14px;
+        }
+
+        .hour-time {
+            font-size: 13px;
+            color: #94a3b8;
+        }
+
+        .hour-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .delete-btn {
+            background: #ef4444;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .delete-btn:hover {
+            background: #dc2626;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2);
+        }
+
+        /* ===== APPOINTMENTS LIST ===== */
+        .appointments-list {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .appointment-card {
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 20px;
+            transition: all 0.3s ease;
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 20px;
+        }
+
+        .appointment-card:hover {
+            border-color: #cbd5e1;
+            box-shadow: 0 8px 24px rgba(2, 8, 23, 0.08);
+        }
+
+        .appointment-card.pending {
+            border-left: 4px solid #f59e0b;
+            background: rgba(245, 158, 11, 0.02);
+        }
+
+        .appointment-card.confirmed {
+            border-left: 4px solid #10b981;
+            background: rgba(16, 185, 129, 0.02);
+        }
+
+        .appointment-info h4 {
+            font-size: 16px;
+            color: #0f172a;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .appointment-detail {
+            font-size: 13px;
+            color: #94a3b8;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .appointment-detail strong {
+            color: #0f172a;
+            min-width: 80px;
+            font-weight: 600;
+        }
+
+        .appointment-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            justify-content: center;
+        }
+
+        .btn-action {
+            padding: 10px 14px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-confirm {
+            background: #10b981;
+            color: white;
+        }
+
+        .btn-confirm:hover {
+            background: #059669;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
+        }
+
+        .btn-cancel {
+            background: #ef4444;
+            color: white;
+        }
+
+        .btn-cancel:hover {
+            background: #dc2626;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2);
+        }
+
+        /* ===== EMPTY STATE ===== */
+        .empty-state {
+            text-align: center;
+            padding: 48px 20px;
+            color: #94a3b8;
+        }
+
+        .empty-icon {
+            font-size: 48px;
+            margin-bottom: 12px;
+            display: none;
+        }
+
+        .empty-state h3 {
+            font-size: 16px;
+            color: #0f172a;
+            margin-bottom: 6px;
+            font-weight: 700;
+        }
+
+        .empty-state p {
+            font-size: 14px;
+            color: #94a3b8;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 1024px) {
+            .dashboard-container {
+                grid-template-columns: 1fr;
+            }
+
+            .appointment-card {
+                grid-template-columns: 1fr;
+            }
+
+            .dashboard-section {
+                margin: 40px auto 60px;
+            }
+        }
+
+        @media (max-width: 560px) {
+            .dashboard-header h1 {
+                font-size: 28px;
+            }
+
+            .dashboard-header p {
+                font-size: 16px;
+            }
+
+            .form-row-schedule {
+                grid-template-columns: 1fr;
+            }
+
+            .tabs {
+                flex-wrap: wrap;
+            }
+
+            .appointment-card {
+                padding: 16px;
+                gap: 12px;
+            }
+
+            .appointment-actions {
+                flex-direction: row;
+            }
+
+            .dashboard-container {
+                gap: 20px;
+            }
+
+            .dashboard-sidebar {
+                gap: 16px;
+            }
+
+            .dashboard-main {
+                gap: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="nav" aria-label="Main">
+        <div class="nav__inner">
+            <a class="brand" href="index.html">
+                <span class="brand__logo" aria-hidden="true"></span>
+                <span class="brand__name">hola<span class="brand__tm">™</span></span>
+            </a>
+
+            <div class="menu" role="menubar" aria-label="Primary">
+                <a href="index.html">Home</a>
+                <a href="teacher_dashboard.html">Mi Panel</a>
+                <a href="#about">Sobre Nosotros</a>
+            </div>
+
+            <div class="socials" aria-label="Redes sociales">
+                <a class="bubble" href="#" aria-label="Instagram">
+                    <svg viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="5" stroke="currentColor" stroke-width="1.4"/><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg>
+                </a>
+                <a class="bubble" href="#" aria-label="Twitter">
+                    <svg viewBox="0 0 24 24" fill="none"><path d="M4 4l7 8.5L6.5 20 20 8.5 13.5 20" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </a>
+            </div>
+
+            <button class="burger" id="burger" aria-label="Abrir menú" aria-expanded="false" aria-controls="drawer">
+                <svg viewBox="0 0 24 24" fill="none"><path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+            </button>
+        </div>
+    </nav>
+
+    <main>
+        <section class="dashboard-section">
+            <!-- HEADER -->
+            <div class="dashboard-header" data-aos="fade-down" data-aos-duration="600">
+                <h1>Panel del Profesor</h1>
+                <p>Administra tus horas disponibles y citas de tutoría</p>
+            </div>
+
+            <div class="dashboard-container">
+                <!-- SIDEBAR -->
+                <aside class="dashboard-sidebar" data-aos="fade-right" data-aos-duration="600">
+                <!-- Teacher Info Card -->
+                <div class="card teacher-info-card">
+                    <div class="teacher-profile">
+                        <div class="teacher-avatar">👨‍🏫</div>
+                        <h3 id="teacherName">Cargando...</h3>
+                        <p class="teacher-specialty" id="teacherSpecialty"></p>
+                    </div>
+
+                    <div class="teacher-stats">
+                        <div class="stat-item">
+                            <div class="stat-number" id="totalAppointments">0</div>
+                            <div class="stat-label">Citas</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number" id="availableHours">0</div>
+                            <div class="stat-label">Horarios</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Schedule Manager Card -->
+                <div class="card schedule-card">
+                    <h3>Agregar Horario</h3>
+                    <form class="schedule-form" id="scheduleForm" onsubmit="addSchedule(event)">
+                        <div class="form-group-schedule">
+                            <label for="daySelect">Día de la Semana *</label>
+                            <select id="daySelect" required>
+                                <option value="">Selecciona un día</option>
+                                <option value="lunes">Lunes</option>
+                                <option value="martes">Martes</option>
+                                <option value="miércoles">Miércoles</option>
+                                <option value="jueves">Jueves</option>
+                                <option value="viernes">Viernes</option>
+                                <option value="sábado">Sábado</option>
+                                <option value="domingo">Domingo</option>
+                            </select>
+                        </div>
+
+                        <div class="form-row-schedule">
+                            <div class="form-group-schedule">
+                                <label for="startTime">Hora Inicio *</label>
+                                <input type="time" id="startTime" required>
+                            </div>
+                            <div class="form-group-schedule">
+                                <label for="endTime">Hora Fin *</label>
+                                <input type="time" id="endTime" required>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="add-schedule-btn">Agregar Horario</button>
+                    </form>
+                </div>
+            </aside>
+
+            <!-- MAIN CONTENT -->
+            <section class="dashboard-main" data-aos="fade-left" data-aos-duration="600">
+                <!-- Tabs -->
+                <div class="tabs">
+                    <button class="tab-btn active" onclick="switchTab('hours')">Horas Disponibles</button>
+                    <button class="tab-btn" onclick="switchTab('appointments')">Mis Citas</button>
+                </div>
+
+                <!-- Available Hours Tab -->
+                <div id="hours" class="tab-content active card">
+                    <h3>Tu Horario Disponible</h3>
+                    <div class="hours-list" id="hoursList">
+                        <div class="empty-state">
+                            <div class="empty-icon">📭</div>
+                            <h3>Sin horarios disponibles</h3>
+                            <p>Agrega horarios desde el panel lateral</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Appointments Tab -->
+                <div id="appointments" class="tab-content card">
+                    <h3>Citas Programadas</h3>
+                    <div class="appointments-list" id="appointmentsList">
+                        <div class="empty-state">
+                            <div class="empty-icon">📭</div>
+                            <h3>Sin citas programadas</h3>
+                            <p>Aún no tienes citas agendadas</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer__inner">
+            <div class="footer__brand">
+                <div class="brand__logo"></div>
+                <ul>
+                    <li><a href="#">About</a></li>
+                    <li><a href="#">Features</a></li>
+                    <li><a href="#">Pricing</a></li>
+                    <li><a href="#">Careers</a></li>
+                    <li><a href="#">Help</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                </ul>
+                <p class="copy">© 2025 Landify UI Kit. All rights reserved.</p>
+            </div>
+            <div class="footer__col">
+                <h4>Product</h4>
+                <ul>
+                    <li><a href="#">Overview</a></li>
+                    <li><a href="#">Features</a></li>
+                    <li><a href="#">Tutorials</a></li>
+                    <li><a href="#">Pricing</a></li>
+                    <li><a href="#">Releases</a></li>
+                </ul>
+            </div>
+            <div class="footer__col">
+                <h4>Company</h4>
+                <ul>
+                    <li><a href="#">About</a></li>
+                    <li><a href="#">Press</a></li>
+                    <li><a href="#">Careers</a></li>
+                    <li><a href="#">Contact</a></li>
+                    <li><a href="#">Partners</a></li>
+                </ul>
+            </div>
+            <div class="footer__col">
+                <h4>Support</h4>
+                <ul>
+                    <li><a href="#">Help Center</a></li>
+                    <li><a href="#">Terms of service</a></li>
+                    <li><a href="#">Legal</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Status</a></li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const API_URL = 'http://localhost:3001/api/teacher';
+        let currentTeacherId = 1; // En producción, esto vendría de la sesión del usuario
+        let teacherData = null;
+
+        // Inicializar
+        AOS.init({
+            duration: 800,
+            easing: 'ease-in-out',
+            once: true,
+            offset: 100
+        });
+
+        async function loadTeacherData() {
+            try {
+                const response = await fetch(`${API_URL}/schedules/${currentTeacherId}`);
+                teacherData = await response.json();
+                
+                document.getElementById('teacherName').textContent = teacherData.teacherName;
+                document.getElementById('teacherSpecialty').textContent = teacherData.teacherName === 'Carlos Martínez' ? 'Especialista en Matemáticas' : 'Profesor Experimentado';
+                
+                updateStats();
+                displayHours();
+                displayAppointments();
+            } catch (error) {
+                console.error('Error loading teacher data:', error);
+            }
+        }
+
+        function updateStats() {
+            const totalAppointments = teacherData.appointments.length;
+            const availableHours = teacherData.availableHours.length;
+            
+            document.getElementById('totalAppointments').textContent = totalAppointments;
+            document.getElementById('availableHours').textContent = availableHours;
+        }
+
+        function displayHours() {
+            const hoursList = document.getElementById('hoursList');
+            
+            if (teacherData.availableHours.length === 0) {
+                hoursList.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-icon">📭</div>
+                        <h3>Sin horarios disponibles</h3>
+                        <p>Agrega horarios desde el panel lateral</p>
+                    </div>
+                `;
+                return;
+            }
+
+            hoursList.innerHTML = teacherData.availableHours.map((hour, index) => `
+                <div class="hour-item">
+                    <div class="hour-info">
+                        <div class="hour-day">${hour.day}</div>
+                        <div class="hour-time">${hour.startTime} - ${hour.endTime}</div>
+                    </div>
+                    <div class="hour-actions">
+                        <button class="delete-btn" onclick="deleteHour(${index})">Eliminar</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function displayAppointments() {
+            const appointmentsList = document.getElementById('appointmentsList');
+            
+            if (teacherData.appointments.length === 0) {
+                appointmentsList.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-icon">📭</div>
+                        <h3>Sin citas programadas</h3>
+                        <p>Aún no tienes citas agendadas</p>
+                    </div>
+                `;
+                return;
+            }
+
+            appointmentsList.innerHTML = teacherData.appointments.map(apt => `
+                <div class="appointment-card confirmed">
+                    <div class="appointment-info">
+                        <h4>${apt.studentName}</h4>
+                        <div class="appointment-detail">
+                            <strong>Email:</strong> ${apt.studentEmail}
+                        </div>
+                        <div class="appointment-detail">
+                            <strong>Materia:</strong> ${apt.subject}
+                        </div>
+                        <div class="appointment-detail">
+                            <strong>Fecha:</strong> ${apt.date}
+                        </div>
+                        <div class="appointment-detail">
+                            <strong>Hora:</strong> ${apt.startTime} - ${apt.endTime}
+                        </div>
+                        <div class="appointment-detail">
+                            <strong>Notas:</strong> ${apt.notes || 'Sin notas'}
+                        </div>
+                    </div>
+                    <div class="appointment-actions">
+                        <button class="btn-action btn-confirm" onclick="confirmAppointment('${apt.id}')">Confirmar</button>
+                        <button class="btn-action btn-cancel" onclick="cancelAppointment('${apt.id}')">Cancelar</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function switchTab(tabName) {
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Remove active class from all buttons
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Show selected tab
+            document.getElementById(tabName).classList.add('active');
+            
+            // Add active class to clicked button
+            event.target.classList.add('active');
+        }
+
+        function addSchedule(e) {
+            e.preventDefault();
+            
+            const day = document.getElementById('daySelect').value;
+            const startTime = document.getElementById('startTime').value;
+            const endTime = document.getElementById('endTime').value;
+            
+            if (!day || !startTime || !endTime) {
+                alert('Por favor completa todos los campos');
+                return;
+            }
+
+            const newSchedule = {
+                day,
+                startTime,
+                endTime
+            };
+
+            teacherData.availableHours.push(newSchedule);
+            
+            // Reset form
+            document.getElementById('scheduleForm').reset();
+            
+            // Update display
+            updateStats();
+            displayHours();
+            
+            alert('Horario agregado exitosamente');
+        }
+
+        function deleteHour(index) {
+            if (confirm('¿Estás seguro de que deseas eliminar este horario?')) {
+                teacherData.availableHours.splice(index, 1);
+                updateStats();
+                displayHours();
+            }
+        }
+
+        function confirmAppointment(aptId) {
+            alert('Cita confirmada correctamente');
+        }
+
+        function cancelAppointment(aptId) {
+            if (confirm('¿Cancelar esta cita?')) {
+                teacherData.appointments = teacherData.appointments.filter(apt => apt.id !== aptId);
+                displayAppointments();
+                updateStats();
+            }
+        }
+
+        // Load data on page load
+        window.addEventListener('DOMContentLoaded', loadTeacherData);
+    </script>
+</body>
+</html>

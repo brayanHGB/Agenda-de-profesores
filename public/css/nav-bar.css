@@ -1,0 +1,62 @@
+:root{
+  --fg:#0f172a;
+  --muted:#64748b;
+  --ring:#e2e8f0;
+  --bubble:#f1f5f9;
+  --hover:#0f172a;
+}
+
+*{box-sizing:border-box}
+html,body{margin:0}
+body{font-family:ui-sans-serif,system-ui,Inter,Arial,sans-serif;color:var(--fg)}
+
+.nav{
+  position:sticky; top:0; z-index:50;
+  background:#fff; border-bottom:1px solid #f1f5f9;
+}
+.nav__inner{
+  max-width:1100px; margin:auto;
+  display:flex; align-items:center; gap:16px;
+  padding:12px 20px;
+}
+
+.brand{display:flex; align-items:center; gap:10px; text-decoration:none; color:inherit}
+.brand__logo{
+  width:28px; height:28px; border-radius:7px;
+  background:conic-gradient(from 180deg,#ff6a00 0 25%,#ff2aa1 0 50%,#6a5cff 0 75%,#2ed3ea 0 100%);
+}
+.brand__name{font-weight:700;}
+.brand__tm{font-size:10px; vertical-align:super; color:var(--muted)}
+
+.menu{display:flex; align-items:center; gap:22px}
+.menu a{text-decoration:none; color:var(--fg); font-size:14.5px; display:inline-flex; align-items:center; gap:6px}
+.menu a .chev{width:12px; height:12px; color:var(--muted)}
+.menu a:hover{color:var(--hover)}
+.menu a:hover .chev{color:var(--fg)}
+
+.socials{margin-left:auto; display:flex; gap:10px}
+.bubble{
+  width:34px; height:34px; display:grid; place-items:center;
+  background:var(--bubble); border:1px solid var(--ring);
+  border-radius:999px; transition:transform .15s ease, box-shadow .15s ease;
+}
+.bubble:hover{transform:translateY(-1px); box-shadow:0 6px 16px rgba(2,8,23,.06)}
+.bubble svg{width:18px; height:18px; color:#374151}
+
+.burger{
+  margin-left:auto; display:none; cursor:pointer;
+  width:40px; height:40px; border-radius:10px;
+  border:1px solid var(--ring); background:#fff;
+  align-items:center; justify-content:center;
+}
+.burger svg{width:20px; height:20px}
+.drawer{display:none; border-top:1px solid #eef2f7; background:#fff;}
+.drawer__inner{padding:10px 20px 16px; display:grid; gap:10px}
+.drawer a{color:var(--fg); text-decoration:none; font-size:15px; display:flex; align-items:center; gap:8px}
+.drawer .socials{margin:6px 0 0}
+
+@media (max-width:880px){
+  .menu,.socials{display:none}
+  .burger{display:flex}
+  .drawer.show{display:block}
+}

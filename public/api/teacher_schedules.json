@@ -1,0 +1,115 @@
+{
+  "schedules": [
+    {
+      "teacherId": "1",
+      "teacherName": "Carlos Martínez",
+      "availableHours": [
+        {
+          "day": "lunes",
+          "startTime": "09:00",
+          "endTime": "12:00"
+        },
+        {
+          "day": "martes",
+          "startTime": "09:00",
+          "endTime": "12:00"
+        },
+        {
+          "day": "miércoles",
+          "startTime": "14:00",
+          "endTime": "18:00"
+        },
+        {
+          "day": "jueves",
+          "startTime": "09:00",
+          "endTime": "12:00"
+        },
+        {
+          "day": "viernes",
+          "startTime": "15:00",
+          "endTime": "19:00"
+        }
+      ],
+      "appointments": [
+        {
+          "id": "apt1",
+          "studentName": "Juan Pérez",
+          "studentEmail": "juan@example.com",
+          "subject": "Matemáticas",
+          "date": "2025-11-15",
+          "startTime": "09:00",
+          "endTime": "10:00",
+          "duration": "60",
+          "notes": "Ayuda con cálculo integral"
+        },
+        {
+          "id": "apt2",
+          "studentName": "María García",
+          "studentEmail": "maria@example.com",
+          "subject": "Matemáticas",
+          "date": "2025-11-15",
+          "startTime": "11:00",
+          "endTime": "11:30",
+          "duration": "30",
+          "notes": "Dudas sobre ecuaciones diferenciales"
+        }
+      ]
+    },
+    {
+      "teacherId": "2",
+      "teacherName": "Ana López",
+      "availableHours": [
+        {
+          "day": "lunes",
+          "startTime": "10:00",
+          "endTime": "13:00"
+        },
+        {
+          "day": "miércoles",
+          "startTime": "10:00",
+          "endTime": "13:00"
+        },
+        {
+          "day": "viernes",
+          "startTime": "10:00",
+          "endTime": "14:00"
+        }
+      ],
+      "appointments": []
+    },
+    {
+      "teacherId": "3",
+      "teacherName": "Roberto Silva",
+      "availableHours": [
+        {
+          "day": "martes",
+          "startTime": "15:00",
+          "endTime": "19:00"
+        },
+        {
+          "day": "jueves",
+          "startTime": "15:00",
+          "endTime": "19:00"
+        },
+        {
+          "day": "sábado",
+          "startTime": "10:00",
+          "endTime": "14:00"
+        }
+      ],
+      "appointments": [
+        {
+          "id": "apt3",
+          "studentName": "Pedro Rodríguez",
+          "studentEmail": "pedro@example.com",
+          "subject": "Inglés",
+          "date": "2025-11-16",
+          "startTime": "15:00",
+          "endTime": "16:00",
+          "duration": "60",
+          "notes": "Conversación en inglés"
+        }
+      ]
+    }
+  ]
+}

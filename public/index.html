@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agenda de Profesores</title>
+    <link rel="stylesheet" href="css/nav-bar.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/lottie.css">
+    <link rel="icon" type="image/x-icon" href="img/favicon.ico">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js"></script>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+</head>
+<body>
+    <nav class="nav" aria-label="Main">
+    <div class="nav__inner">
+     
+      <a class="brand" href="#">
+        <span class="brand__logo" aria-hidden="true"></span>
+        <span class="brand__name">hola<span class="brand__tm">™</span>
+      </a>
+
+     
+      <div class="menu" role="menubar" aria-label="Primary">
+        <a href="#">Solutions
+          <svg class="chev" viewBox="0 0 24 24" fill="none"><path d="M7 10l5 5 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+        <a href="#">Resources
+          <svg class="chev" viewBox="0 0 24 24" fill="none"><path d="M7 10l5 5 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+        <a href="#">Download
+          <svg class="chev" viewBox="0 0 24 24" fill="none"><path d="M7 10l5 5 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+        <a href="#">Pricing</a>
+      </div>
+
+    
+      <div class="socials" aria-label="Redes sociales">
+        <a class="bubble" href="#" aria-label="Instagram">
+          <svg viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="5" stroke="currentColor" stroke-width="1.4"/><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg>
+        </a>
+        <a class="bubble" href="#" aria-label="Dribbble">
+          <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.4"/><path d="M5 9.5c4 .5 8 .2 12-2.5M8 19c1.5-5 3.5-8 7-11M4.5 14.5c3.5-1 8.5-1.5 15 1" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+        </a>
+        <a class="bubble" href="#" aria-label="Twitter">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M4 4l7 8.5L6.5 20 20 8.5 13.5 20" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+        <a class="bubble" href="#" aria-label="YouTube">
+          <svg viewBox="0 0 24 24" fill="none"><rect x="3" y="6.5" width="18" height="11" rx="3" stroke="currentColor" stroke-width="1.4"/><path d="M11 10l4 2-4 2v-4z" fill="currentColor"/></svg>
+        </a>
+      </div>
+
+      
+      <button class="burger" id="burger" aria-label="Abrir menú" aria-expanded="false" aria-controls="drawer">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+
+    
+    <div id="drawer" class="drawer" role="dialog" aria-modal="false">
+      <div class="drawer__inner">
+        <a href="#">Solutions</a>
+        <a href="#">Resources</a>
+        <a href="#">Download</a>
+        <a href="#">Pricing</a>
+        <div class="socials">
+          <a class="bubble" href="#" aria-label="Instagram">
+            <svg viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="5" stroke="currentColor" stroke-width="1.4"/><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg>
+          </a>
+          <a class="bubble" href="#" aria-label="Dribbble">
+            <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.4"/><path d="M5 9.5c4 .5 8 .2 12-2.5M8 19c1.5-5 3.5-8 7-11M4.5 14.5c3.5-1 8.5-1.5 15 1" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+          </a>
+          <a class="bubble" href="#" aria-label="Twitter">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M4 4l7 8.5L6.5 20 20 8.5 13.5 20" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+          <a class="bubble" href="#" aria-label="YouTube">
+            <svg viewBox="0 0 24 24" fill="none"><rect x="3" y="6.5" width="18" height="11" rx="3" stroke="currentColor" stroke-width="1.4"/><path d="M11 10l4 2-4 2v-4z" fill="currentColor"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+  <section class="hero">
+  <div class="hero-text" data-aos="fade-right" data-aos-duration="800">
+    <h1>¿Buscas el mejor profesor sin complicaciones?</h1>
+    <p>👨‍🎓 Únete a la comunidad más grande de clases en Colombia.</p>
+    <p>👨‍🎓 Agenda tu clase hoy ¡La primera clase es GRATIS!</p>
+
+    <div class="hero-buttons">
+      <button onclick="smoothTransition('log_in.html')">
+        <span class="button_top">inicia sesion</span>
+      </button>
+      <button class="secondary" onclick="smoothTransition('log_in.html')">
+        <span class="button_top">registrate</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="hero-img" data-aos="fade-left" data-aos-duration="800" data-aos-delay="200">
+  <div id="hero-lottie" class="lottie-box" role="img" aria-label="Animación de profesores"></div>
+</div>
+</section>
+
+
+<section class="metrics">
+  <header class="metrics__head" data-aos="fade-up" data-aos-duration="600">
+    <h2>Números que importan</h2>
+    <p>Nuestros logros en el camino representados en cifras</p>
+  </header>
+
+  <div class="metrics__grid">
+    <article class="metric" data-aos="zoom-in" data-aos-duration="600" data-aos-delay="100">
+      <h3>40+</h3>
+      <span>Estudiantes Felices</span>
+    </article>
+    <article class="metric" data-aos="zoom-in" data-aos-duration="600" data-aos-delay="200">
+      <h3>540+</h3>
+      <span>Clases Completadas</span>
+    </article>
+    <article class="metric" data-aos="zoom-in" data-aos-duration="600" data-aos-delay="300">
+      <h3>300+</h3>
+      <span>Profesores Dedicados</span>
+    </article>
+    <article class="metric" data-aos="zoom-in" data-aos-duration="600" data-aos-delay="400">
+      <h3>25+</h3>
+      <span>Premios Ganados</span>
+    </article>
+  </div>
+</section>
+
+
+<section class="testimonials" aria-label="Testimonios de estudiantes" data-aos="fade-up" data-aos-duration="700">
+  <div class="tst-list">
+    
+    <article class="tst">
+      <div class="tst__profile">
+        <img src="https://images.unsplash.com/photo-1544723795-3fb6469f5b39?w=240&q=80" alt="Jenny Wilson" />
+        <div>
+          <strong>Jenny Wilson</strong>
+          <small>Vice President</small>
+        </div>
+      </div>
+      <blockquote class="tst__quote">
+        <span class="mark">“</span>
+        Tuvimos una experiencia increíble trabajando con esta plataforma y nos impresionó la gran diferencia que hicieron en solo tres semanas.
+      </blockquote>
+    </article>
+
+    <article class="tst">
+      <div class="tst__profile">
+        <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=240&q=80" alt="Cody Fisher" />
+        <div>
+          <strong>Cody Fisher</strong>
+          <small>Design Lead</small>
+        </div>
+      </div>
+      <blockquote class="tst__quote">
+        <span class="mark">“</span>
+        Colaboración fluida, rápida y altamente profesional. Entendieron rápidamente nuestras limitaciones y superaron las expectativas.
+      </blockquote>
+    </article>
+
+    <article class="tst">
+      <div class="tst__profile">
+        <img src="https://images.unsplash.com/photo-1547425260-76bcadfb4f2c?w=240&q=80" alt="Arlene McCoy" />
+        <div>
+          <strong>Arlene McCoy</strong>
+          <small>Product Manager</small>
+        </div>
+      </div>
+      <blockquote class="tst__quote">
+        <span class="mark">“</span>
+        Comunicación clara, cronogramas confiables y decisiones de diseño bien pensadas. Nuestras métricas de lanzamiento mejoraron inmediatamente.
+      </blockquote>
+    </article>
+
+    <article class="tst">
+      <div class="tst__profile">
+        <img src="https://images.unsplash.com/photo-1502685104226-ee32379fefbe?w=240&q=80" alt="Jacob Jones" />
+        <div>
+          <strong>Jacob Jones</strong>
+          <small>Growth Marketer</small>
+        </div>
+      </div>
+      <blockquote class="tst__quote">
+        <span class="mark">“</span>
+        Nos ayudaron a aclarar la propuesta de valor y acortar el tiempo de entrega. Fantástico socio para iteración rápida.
+      </blockquote>
+    </article>
+
+    <article class="tst">
+      <div class="tst__profile">
+        <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=240&q=80" alt="Courtney Henry" />
+        <div>
+          <strong>Courtney Henry</strong>
+          <small>Head of Ops</small>
+        </div>
+      </div>
+      <blockquote class="tst__quote">
+        <span class="mark">“</span>
+        Gran artesanía y atención al detalle. Las partes interesadas quedaron impresionadas con el pulido del producto final.
+      </blockquote>
+    </article>
+
+    <article class="tst">
+      <div class="tst__profile">
+        <img src="https://images.unsplash.com/photo-1527980965255-d3b416303d12?w=240&q=80" alt="Darlene Robertson" />
+        <div>
+          <strong>Darlene Robertson</strong>
+          <small>Engineering Lead</small>
+        </div>
+      </div>
+      <blockquote class="tst__quote">
+        <span class="mark">“</span>
+        Ejecución técnica sólida y un equipo amigable. Hicieron que los requisitos complejos se sintieran simples y alcanzables.
+      </blockquote>
+    </article>
+  </div>
+
+  <div class="tst__dots" role="tablist" aria-label="paginación de testimonios"></div>
+</section>
+
+<section class="features">
+  <header class="features__head" data-aos="fade-up" data-aos-duration="600">
+    <h2>Descubre las características clave</h2>
+  </header>
+
+  <div class="features__grid">
+    <!-- 1 -->
+    <article class="feature" data-aos="fade-up" data-aos-duration="600" data-aos-delay="100">
+      <div class="feature__icon">
+        <!-- icono 1 -->
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <rect x="3" y="3" width="6" height="18" rx="2"/>
+          <rect x="11" y="6" width="10" height="4" rx="2"/>
+          <rect x="11" y="14" width="10" height="4" rx="2"/>
+        </svg>
+      </div>
+      <h3>Flujo de trabajo robusto</h3>
+      <p>Sistema de gestión de clases eficiente que facilita la coordinación entre profesores y estudiantes.</p>
+    </article>
+
+    <!-- 2 -->
+    <article class="feature" data-aos="fade-up" data-aos-duration="600" data-aos-delay="200">
+      <div class="feature__icon">
+        <!-- icono 2 -->
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <rect x="4" y="6" width="16" height="3" rx="1.5"/>
+          <rect x="6" y="11" width="12" height="3" rx="1.5"/>
+          <rect x="8" y="16" width="8" height="3" rx="1.5"/>
+        </svg>
+      </div>
+      <h3>Flexibilidad</h3>
+      <p>Horarios adaptables y modalidades de clase presencial y virtual según tus necesidades.</p>
+    </article>
+
+    <!-- 3 -->
+    <article class="feature" data-aos="fade-up" data-aos-duration="600" data-aos-delay="300">
+      <div class="feature__icon">
+        <!-- icono 3 -->
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <rect x="4" y="4" width="7" height="7" rx="2"/>
+          <rect x="13" y="4" width="7" height="7" rx="2"/>
+          <rect x="4" y="13" width="7" height="7" rx="2"/>
+          <rect x="13" y="13" width="7" height="7" rx="2"/>
+        </svg>
+      </div>
+      <h3>Fácil de usar</h3>
+      <p>Interfaz intuitiva y sencilla que permite agendar clases en pocos clics.</p>
+    </article>
+
+    <!-- 4 -->
+    <article class="feature" data-aos="fade-up" data-aos-duration="600" data-aos-delay="100">
+      <div class="feature__icon">
+        <!-- icono 4 -->
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <rect x="4" y="5" width="16" height="4" rx="2"/>
+          <rect x="4" y="10" width="10" height="4" rx="2"/>
+          <rect x="4" y="15" width="13" height="4" rx="2"/>
+        </svg>
+      </div>
+      <h3>Múltiples opciones</h3>
+      <p>Variedad de materias y profesores especializados para todas las áreas de estudio.</p>
+    </article>
+
+    <!-- 5 -->
+    <article class="feature" data-aos="fade-up" data-aos-duration="600" data-aos-delay="200">
+      <div class="feature__icon">
+        <!-- icono 5 -->
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <rect x="5" y="4" width="14" height="4" rx="2"/>
+          <rect x="5" y="10" width="10" height="4" rx="2"/>
+          <rect x="5" y="16" width="7" height="4" rx="2"/>
+        </svg>
+      </div>
+      <h3>Mejores herramientas</h3>
+      <p>Recursos educativos avanzados y herramientas de seguimiento del progreso académico.</p>
+    </article>
+
+    <!-- 6 -->
+    <article class="feature" data-aos="fade-up" data-aos-duration="600" data-aos-delay="300">
+      <div class="feature__icon">
+        <!-- icono 6 -->
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M12 4l3 5H9l3-5zM6 15l3-5h6l3 5-6 5-6-5z"/>
+        </svg>
+      </div>
+      <h3>Bien organizado</h3>
+      <p>Sistema ordenado de gestión de clases, pagos y comunicación con profesores.</p>
+    </article>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="footer__inner">
+
+    <!-- COLUMNA 1 -->
+    <div class="footer__brand">
+      <div class="brand__logo"></div>
+      <ul>
+        <li><a href="#">About</a></li>
+        <li><a href="#">Features</a></li>
+        <li><a href="#">Pricing</a></li>
+        <li><a href="#">Careers</a></li>
+        <li><a href="#">Help</a></li>
+        <li><a href="#">Privacy Policy</a></li>
+      </ul>
+      <p class="copy">© 2025 Landify UI Kit. All rights reserved.</p>
+    </div>
+
+    <!-- COLUMNA 2 -->
+    <div class="footer__col">
+      <h4>Product</h4>
+      <ul>
+        <li><a href="#">Overview</a></li>
+        <li><a href="#">Features</a></li>
+        <li><a href="#">Tutorials</a></li>
+        <li><a href="#">Pricing</a></li>
+        <li><a href="#">Releases</a></li>
+      </ul>
+    </div>
+
+    <!-- COLUMNA 3 -->
+    <div class="footer__col">
+      <h4>Company</h4>
+      <ul>
+        <li><a href="#">About</a></li>
+        <li><a href="#">Press</a></li>
+        <li><a href="#">Careers</a></li>
+        <li><a href="#">Contact</a></li>
+        <li><a href="#">Partners</a></li>
+      </ul>
+    </div>
+
+    <!-- COLUMNA 4 -->
+    <div class="footer__col">
+      <h4>Support</h4>
+      <ul>
+        <li><a href="#">Help Center</a></li>
+        <li><a href="#">Terms of service</a></li>
+        <li><a href="#">Legal</a></li>
+        <li><a href="#">Privacy Policy</a></li>
+        <li><a href="#">Status</a></li>
+      </ul>
+    </div>
+
+    <!-- COLUMNA 5 -->
+    
+
+  </div>
+</footer>
+<script src="scripts.js"></script>
+<script>
+  AOS.init({
+    duration: 800,
+    easing: 'ease-in-out',
+    once: true,
+    offset: 100
+  });
+
+  
+  function smoothTransition(url) {
+    document.body.style.transition = 'opacity 0.3s ease-out';
+    document.body.style.opacity = '0';
+    
+    setTimeout(() => {
+      window.location.href = url;
+    }, 300);
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Perfil - Estudiante</title>
+    <link rel="stylesheet" href="css/nav-bar.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="icon" type="image/x-icon" href="img/favicon.ico">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <style>
+        /* ===== PROFILE PAGE ===== */
+        .profile-section {
+            max-width: 1100px;
+            margin: 60px auto 80px;
+            padding: 0 20px;
+        }
+
+        .profile-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .profile-header h1 {
+            font-size: clamp(28px, 4vw, 44px);
+            color: #000000;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 0px #e8e8e8, 1px 1px 0px #e8e8e8;
+            font-weight: bold;
+        }
+
+        .profile-header p {
+            color: #64748b;
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        .profile-container {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 40px;
+        }
+
+        /* ===== LEFT SIDEBAR ===== */
+        .profile-sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .profile-card {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 26px rgba(2, 8, 23, 0.08);
+            border: 1px solid #e2e8f0;
+        }
+
+        .profile-card:hover {
+            box-shadow: 0 12px 32px rgba(2, 8, 23, 0.12);
+            transform: translateY(-2px);
+        }
+
+        .photo-section {
+            text-align: center;
+        }
+
+        .profile-photo {
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            background: #f1f5f9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            margin: 0 auto 16px;
+            border: 3px solid #e2e8f0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            overflow: hidden;
+            object-fit: cover;
+        }
+
+        .profile-photo:hover {
+            border-color: #0f172a;
+            box-shadow: 0 8px 24px rgba(15, 23, 42, 0.15);
+        }
+
+        .profile-photo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .photo-input {
+            display: none;
+        }
+
+        .photo-label {
+            display: inline-block;
+            background: #0f172a;
+            color: white;
+            padding: 10px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin-top: 12px;
+        }
+
+        .photo-label:hover {
+            background: #1e293b;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(15, 23, 42, 0.2);
+        }
+
+        .profile-info h3 {
+            font-size: 18px;
+            color: #0f172a;
+            margin: 12px 0 4px;
+            font-weight: 700;
+        }
+
+        .profile-info p {
+            color: #64748b;
+            font-size: 14px;
+            margin: 2px 0;
+        }
+
+        .divider {
+            height: 1px;
+            background: #e2e8f0;
+            margin: 16px 0;
+        }
+
+        /* ===== RIGHT CONTENT ===== */
+        .profile-main {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .edit-section {
+            background: white;
+            border-radius: 12px;
+            padding: 32px;
+            box-shadow: 0 10px 26px rgba(2, 8, 23, 0.08);
+            border: 1px solid #e2e8f0;
+        }
+
+        .section-title {
+            font-size: 20px;
+            color: #0f172a;
+            margin-bottom: 24px;
+            font-weight: 700;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            color: #0f172a;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 12px 14px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: inherit;
+            transition: all 0.3s ease;
+            background: white;
+            color: #0f172a;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #cbd5e1;
+            box-shadow: 0 0 0 3px rgba(203, 213, 225, 0.1);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .save-btn {
+            background: #0f172a;
+            color: white;
+            border: none;
+            padding: 12px 28px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            width: fit-content;
+        }
+
+        .save-btn:hover {
+            background: #1e293b;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(15, 23, 42, 0.2);
+        }
+
+        .success-message {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid #10b981;
+            color: #059669;
+            padding: 12px 16px;
+            border-radius: 8px;
+            font-size: 14px;
+            margin-top: 16px;
+            display: none;
+        }
+
+        .success-message.show {
+            display: block;
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 1024px) {
+            .profile-container {
+                grid-template-columns: 1fr;
+            }
+
+            .edit-section {
+                padding: 24px;
+            }
+        }
+
+        @media (max-width: 560px) {
+            .profile-header h1 {
+                font-size: 28px;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .profile-section {
+                margin: 40px auto 60px;
+            }
+
+            .profile-photo {
+                width: 100px;
+                height: 100px;
+                font-size: 36px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="nav" aria-label="Main">
+        <div class="nav__inner">
+            <a class="brand" href="index.html">
+                <span class="brand__logo" aria-hidden="true"></span>
+                <span class="brand__name">hola<span class="brand__tm">™</span></span>
+            </a>
+
+            <div class="menu" role="menubar" aria-label="Primary">
+                <a href="index.html">Home</a>
+                <a href="student_profile.html">Mi Perfil</a>
+                <a href="booking.html">Agendar Clase</a>
+            </div>
+
+            <div class="socials" aria-label="Redes sociales">
+                <a class="bubble" href="#" aria-label="Instagram">
+                    <svg viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="5" stroke="currentColor" stroke-width="1.4"/><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg>
+                </a>
+                <a class="bubble" href="#" aria-label="Twitter">
+                    <svg viewBox="0 0 24 24" fill="none"><path d="M4 4l7 8.5L6.5 20 20 8.5 13.5 20" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </a>
+            </div>
+
+            <button class="burger" id="burger" aria-label="Abrir menú" aria-expanded="false" aria-controls="drawer">
+                <svg viewBox="0 0 24 24" fill="none"><path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+            </button>
+        </div>
+    </nav>
+
+    <main>
+        <section class="profile-section">
+            <!-- HEADER -->
+            <div class="profile-header" data-aos="fade-down" data-aos-duration="600">
+                <h1>Mi Perfil</h1>
+                <p>Completa tu perfil para que los profesores te conozcan mejor</p>
+            </div>
+
+            <div class="profile-container">
+                <!-- SIDEBAR -->
+                <aside class="profile-sidebar" data-aos="fade-right" data-aos-duration="600">
+                    <div class="profile-card photo-section">
+                        <div class="profile-photo" id="profilePhoto">
+                            👨‍🎓
+                        </div>
+                        <label for="photoInput" class="photo-label">Cambiar Foto</label>
+                        <input type="file" id="photoInput" class="photo-input" accept="image/*">
+
+                        <div class="profile-info">
+                            <h3 id="displayName">Tu Nombre</h3>
+                            <p id="displayEmail">tu@email.com</p>
+                            <div class="divider"></div>
+                            <p><strong>Nivel Académico:</strong></p>
+                            <p id="displayGrade">-</p>
+                            <p style="margin-top: 12px;"><strong>Materias de Interés:</strong></p>
+                            <p id="displaySubjects">-</p>
+                        </div>
+                    </div>
+                </aside>
+
+                <!-- MAIN CONTENT -->
+                <section class="profile-main" data-aos="fade-left" data-aos-duration="600">
+                    <div class="edit-section">
+                        <h2 class="section-title">Información Personal</h2>
+                        <form id="profileForm">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="firstName">Nombre *</label>
+                                    <input type="text" id="firstName" name="firstName" required readonly>
+                                </div>
+                                <div class="form-group">
+                                    <label for="lastName">Apellido *</label>
+                                    <input type="text" id="lastName" name="lastName" required readonly>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="email">Correo Electrónico *</label>
+                                <input type="email" id="email" name="email" required readonly>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="phone">Teléfono</label>
+                                <input type="tel" id="phone" name="phone" placeholder="+57 123 456 7890">
+                            </div>
+
+                            <h2 class="section-title" style="margin-top: 32px;">Información Académica</h2>
+
+                            <div class="form-group">
+                                <label for="grade">Nivel Académico *</label>
+                                <select id="grade" name="grade" required>
+                                    <option value="">Selecciona tu nivel académico</option>
+                                    <option value="Primaria">Primaria (1-5)</option>
+                                    <option value="Secundaria">Secundaria (6-9)</option>
+                                    <option value="Bachillerato">Bachillerato (10-11)</option>
+                                    <option value="Pregrado">Pregrado/Universidad</option>
+                                    <option value="Posgrado">Posgrado</option>
+                                    <option value="Otro">Otro</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="subjects">Materias de Interés *</label>
+                                <input type="text" id="subjects" name="subjects" placeholder="Ej: Matemáticas, Inglés, Física" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="goals">Objetivos Académicos</label>
+                                <textarea id="goals" name="goals" placeholder="¿Qué esperas lograr con las tutorías? ¿En qué necesitas ayuda?"></textarea>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="experience">Experiencia Previa con Tutorías</label>
+                                <select id="experience" name="experience">
+                                    <option value="">Selecciona una opción</option>
+                                    <option value="Primera vez">Primera vez</option>
+                                    <option value="He tenido tutorías antes">He tenido tutorías antes</option>
+                                    <option value="Tengo tutorías regulares">Tengo tutorías regulares</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="bio">Descripción Adicional</label>
+                                <textarea id="bio" name="bio" placeholder="Cuéntanos más sobre ti, tu estilo de aprendizaje, horarios preferidos, etc."></textarea>
+                            </div>
+
+                            <button type="submit" class="save-btn">Guardar Cambios</button>
+                            <div class="success-message" id="successMessage">✓ Perfil guardado exitosamente</div>
+                        </form>
+                    </div>
+                </section>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer__inner">
+            <div class="footer__brand">
+                <div class="brand__logo"></div>
+                <ul>
+                    <li><a href="#">About</a></li>
+                    <li><a href="#">Features</a></li>
+                    <li><a href="#">Pricing</a></li>
+                    <li><a href="#">Careers</a></li>
+                    <li><a href="#">Help</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                </ul>
+                <p class="copy">© 2025 Landify UI Kit. All rights reserved.</p>
+            </div>
+            <div class="footer__col">
+                <h4>Product</h4>
+                <ul>
+                    <li><a href="#">Overview</a></li>
+                    <li><a href="#">Features</a></li>
+                    <li><a href="#">Tutorials</a></li>
+                    <li><a href="#">Pricing</a></li>
+                    <li><a href="#">Releases</a></li>
+                </ul>
+            </div>
+            <div class="footer__col">
+                <h4>Company</h4>
+                <ul>
+                    <li><a href="#">About</a></li>
+                    <li><a href="#">Press</a></li>
+                    <li><a href="#">Careers</a></li>
+                    <li><a href="#">Contact</a></li>
+                    <li><a href="#">Partners</a></li>
+                </ul>
+            </div>
+            <div class="footer__col">
+                <h4>Support</h4>
+                <ul>
+                    <li><a href="#">Help Center</a></li>
+                    <li><a href="#">Terms of service</a></li>
+                    <li><a href="#">Legal</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Status</a></li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        AOS.init({
+            duration: 800,
+            easing: 'ease-in-out',
+            once: true,
+            offset: 100
+        });
+
+        // Load profile data from localStorage
+        function loadProfileData() {
+            const registrationData = JSON.parse(localStorage.getItem('studentRegistration')) || {};
+            const profileData = JSON.parse(localStorage.getItem('studentProfile')) || {};
+
+            // Fill registration data (read-only)
+            document.getElementById('firstName').value = registrationData.firstName || '';
+            document.getElementById('lastName').value = registrationData.lastName || '';
+            document.getElementById('email').value = registrationData.email || '';
+
+            // Display name in sidebar
+            const fullName = `${registrationData.firstName || ''} ${registrationData.lastName || ''}`.trim();
+            document.getElementById('displayName').textContent = fullName || 'Tu Nombre';
+            document.getElementById('displayEmail').textContent = registrationData.email || 'tu@email.com';
+
+            // Fill editable profile data
+            document.getElementById('phone').value = profileData.phone || '';
+            document.getElementById('grade').value = profileData.grade || '';
+            document.getElementById('subjects').value = profileData.subjects || '';
+            document.getElementById('goals').value = profileData.goals || '';
+            document.getElementById('experience').value = profileData.experience || '';
+            document.getElementById('bio').value = profileData.bio || '';
+
+            // Update sidebar display
+            document.getElementById('displayGrade').textContent = profileData.grade || '-';
+            document.getElementById('displaySubjects').textContent = profileData.subjects || '-';
+
+            // Load photo if exists
+            if (profileData.photo) {
+                document.getElementById('profilePhoto').innerHTML = `<img src="${profileData.photo}" alt="Foto de perfil">`;
+            }
+        }
+
+        // Handle photo upload
+        document.getElementById('photoInput').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    document.getElementById('profilePhoto').innerHTML = `<img src="${event.target.result}" alt="Foto de perfil">`;
+                    localStorage.setItem('studentProfilePhoto', event.target.result);
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Make photo clickable for upload
+        document.getElementById('profilePhoto').addEventListener('click', function() {
+            document.getElementById('photoInput').click();
+        });
+
+        // Save profile
+        document.getElementById('profileForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const profileData = {
+                phone: document.getElementById('phone').value,
+                grade: document.getElementById('grade').value,
+                subjects: document.getElementById('subjects').value,
+                goals: document.getElementById('goals').value,
+                experience: document.getElementById('experience').value,
+                bio: document.getElementById('bio').value,
+                photo: localStorage.getItem('studentProfilePhoto') || null,
+                updatedAt: new Date().toISOString()
+            };
+
+            localStorage.setItem('studentProfile', JSON.stringify(profileData));
+
+            // Update sidebar display
+            document.getElementById('displayGrade').textContent = profileData.grade || '-';
+            document.getElementById('displaySubjects').textContent = profileData.subjects || '-';
+
+            // Show success message
+            const successMsg = document.getElementById('successMessage');
+            successMsg.classList.add('show');
+            setTimeout(() => {
+                successMsg.classList.remove('show');
+            }, 3000);
+        });
+
+        // Load data on page load
+        window.addEventListener('DOMContentLoaded', loadProfileData);
+    </script>
+</body>
+</html>

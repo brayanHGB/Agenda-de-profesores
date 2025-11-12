@@ -1,0 +1,1325 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agendar Tutoría</title>
+    <link rel="stylesheet" href="css/nav-bar.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="icon" type="image/x-icon" href="img/favicon.ico">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <style>
+        /* ===== BOOKING PAGE ===== */
+        .booking-hero {
+            max-width: 1100px;
+            margin: 60px auto 0;
+            padding: 0 20px;
+            text-align: center;
+        }
+
+        .booking-hero h1 {
+            font-size: clamp(28px, 4vw, 44px);
+            font-weight: bold;
+            color: #000000;
+            margin-bottom: 18px;
+            text-shadow: 2px 2px 0px #e8e8e8, 1px 1px 0px #e8e8e8;
+        }
+
+        .booking-hero p {
+            font-size: 18px;
+            color: #64748b;
+            margin-bottom: 40px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* ===== BOOKING CONTAINER ===== */
+        .booking-container {
+            max-width: 1100px;
+            margin: 40px auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+        }
+
+        /* ===== TEACHERS SECTION ===== */
+        .teachers-section {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .teachers-section h2 {
+            font-size: 24px;
+            font-weight: 800;
+            color: #0f172a;
+            margin: 0;
+        }
+
+        /* ===== SEARCH BAR ===== */
+        .search-bar {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .search-input-wrapper {
+            flex: 1;
+            position: relative;
+        }
+
+        .search-input-wrapper input {
+            width: 100%;
+            padding: 12px 16px 12px 40px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .search-input-wrapper input:focus {
+            outline: none;
+            border-color: #06b6d4;
+            box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.1);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 18px;
+            height: 18px;
+            color: #64748b;
+        }
+
+        .filter-btn {
+            padding: 12px 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            background: #fff;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 14px;
+            color: #0f172a;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .filter-btn:hover {
+            border-color: #06b6d4;
+            color: #06b6d4;
+        }
+
+        .filter-btn.active {
+            border-color: #06b6d4;
+            background: rgba(6, 182, 212, 0.1);
+            color: #06b6d4;
+        }
+
+        /* ===== TEACHERS LIST ===== */
+        .teachers-list {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            max-height: 600px;
+            overflow-y: auto;
+        }
+
+        .teachers-list::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .teachers-list::-webkit-scrollbar-track {
+            background: #f1f5f9;
+            border-radius: 10px;
+        }
+
+        .teachers-list::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 10px;
+        }
+
+        .teachers-list::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px 20px;
+            color: #64748b;
+        }
+
+        .loading-spinner {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            border: 3px solid #e2e8f0;
+            border-top-color: #06b6d4;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin-bottom: 12px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .teacher-card {
+            background: #fff;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 20px;
+            display: flex;
+            gap: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .teacher-card:hover {
+            border-color: #06b6d4;
+            box-shadow: 0 8px 24px rgba(6, 182, 212, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .teacher-card.selected {
+            border-color: #06b6d4;
+            background: rgba(6, 182, 212, 0.05);
+        }
+
+        .teacher-card.selected::after {
+            content: '✓';
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            width: 28px;
+            height: 28px;
+            background: #06b6d4;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .teacher-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 12px;
+            object-fit: cover;
+            flex-shrink: 0;
+        }
+
+        .teacher-info h3 {
+            margin: 0 0 4px;
+            font-size: 16px;
+            font-weight: 800;
+            color: #0f172a;
+        }
+
+        .teacher-info p {
+            margin: 0 0 8px;
+            font-size: 13px;
+            color: #64748b;
+        }
+
+        .teacher-subject {
+            display: inline-block;
+            background: rgba(6, 182, 212, 0.1);
+            color: #06b6d4;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .teacher-rating {
+            margin-top: 8px;
+            font-size: 12px;
+            color: #64748b;
+        }
+
+        .teacher-rating span {
+            color: #fbbf24;
+            font-weight: bold;
+        }
+
+        /* ===== BOOKING FORM SECTION ===== */
+        .booking-form-section {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .booking-form-section h2 {
+            font-size: 24px;
+            font-weight: 800;
+            color: #0f172a;
+            margin: 0;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .form-group label {
+            font-weight: 600;
+            color: #0f172a;
+            font-size: 14px;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            padding: 12px 14px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: inherit;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #06b6d4;
+            box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.1);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        /* ===== TIME SLOTS ===== */
+        .time-slots {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
+
+        .time-slot {
+            padding: 12px 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            background: #fff;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.3s ease;
+            font-size: 13px;
+            font-weight: 600;
+            color: #64748b;
+        }
+
+        .time-slot:hover {
+            border-color: #06b6d4;
+            background: rgba(6, 182, 212, 0.05);
+        }
+
+        .time-slot.selected {
+            background: #06b6d4;
+            color: white;
+            border-color: #06b6d4;
+        }
+
+        /* ===== SUBMIT BUTTON ===== */
+        .booking-submit {
+            margin-top: 20px;
+            position: relative;
+            padding: 0;
+            border: none;
+            background: none;
+            cursor: pointer;
+            outline-offset: 4px;
+            transition: filter 250ms;
+        }
+
+        .booking-submit .button_top {
+            display: block;
+            box-sizing: border-box;
+            border: 2px solid #0f172a;
+            border-radius: 12px;
+            padding: 16px 24px;
+            background: #e8e8e8;
+            color: #0f172a;
+            transform: translateY(-0.2em);
+            transition: transform 0.1s ease;
+            font-weight: 600;
+            font-size: 16px;
+            width: 100%;
+        }
+
+        .booking-submit:hover .button_top {
+            transform: translateY(-0.33em);
+        }
+
+        .booking-submit:active .button_top {
+            transform: translateY(0);
+        }
+
+        /* ===== SUCCESS MESSAGE ===== */
+        .success-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .success-modal.show {
+            display: flex;
+        }
+
+        .success-content {
+            background: white;
+            border-radius: 16px;
+            padding: 40px;
+            text-align: center;
+            max-width: 400px;
+            animation: slideUp 0.3s ease;
+        }
+
+        .success-icon {
+            width: 60px;
+            height: 60px;
+            background: rgba(6, 182, 212, 0.1);
+            border: 3px solid #06b6d4;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            margin: 0 auto 20px;
+        }
+
+        .success-content h2 {
+            margin: 0 0 12px;
+            font-size: 24px;
+            color: #0f172a;
+        }
+
+        .success-content p {
+            margin: 0;
+            color: #64748b;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ===== GOOGLE CALENDAR SECTION ===== */
+        .calendar-section {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 280px;
+            background: #1f2937;
+            border: 1px solid #374151;
+            border-radius: 10px;
+            padding: 12px 14px;
+            z-index: 999;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            animation: slideInUp 0.4s ease-out;
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .calendar-section h3 {
+            margin: 0 0 8px;
+            font-size: 14px;
+            font-weight: 700;
+            color: #e5e7eb;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .calendar-close-btn {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            width: 20px;
+            height: 20px;
+            background: transparent;
+            border: none;
+            color: #9ca3af;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .calendar-close-btn:hover {
+            color: #d1d5db;
+            transform: scale(1.1);
+        }
+
+        .calendar-actions {
+            display: flex;
+            gap: 6px;
+            align-items: center;
+        }
+
+        .calendar-info {
+            background: transparent;
+            border: none;
+            border-radius: 0;
+            padding: 0;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            color: #9ca3af;
+        }
+
+        .calendar-info-icon {
+            display: none;
+        }
+
+        .calendar-info-text {
+            flex: 1;
+        }
+
+        .calendar-info-text p {
+            margin: 0;
+            font-size: 12px;
+            color: #9ca3af;
+            line-height: 1.3;
+        }
+
+        .calendar-info-text strong {
+            display: inline;
+            color: #d1d5db;
+            font-weight: 600;
+        }
+
+        .google-calendar-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            width: auto;
+            flex: 1;
+            padding: 7px 12px;
+            background: #374151;
+            border: 1px solid #4b5563;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 11px;
+            color: #d1d5db;
+            transition: all 0.3s ease;
+            margin-bottom: 0;
+        }
+
+        .google-calendar-btn:hover {
+            background: #4b5563;
+            border-color: #6b7280;
+        }
+
+        .google-calendar-btn.connected {
+            background: #374151;
+            border-color: #4b5563;
+            color: #d1d5db;
+        }
+
+        .google-calendar-btn.connected:hover {
+            background: #4b5563;
+        }
+
+        .calendar-reminder-btn {
+            width: 30px;
+            height: 30px;
+            padding: 6px;
+            background: #374151;
+            border: 1px solid #4b5563;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            color: #d1d5db;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .calendar-reminder-btn:hover {
+            background: #4b5563;
+            border-color: #6b7280;
+            transform: scale(1.05);
+        }
+
+        .google-icon {
+            width: 12px;
+            height: 12px;
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3e%3cpath fill='%23d1d5db' d='M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z'/%3e%3cpath fill='%23d1d5db' d='M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z'/%3e%3cpath fill='%23d1d5db' d='M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z'/%3e%3cpath fill='%23d1d5db' d='M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z'/%3e%3c/svg%3e");
+            background-size: contain;
+            background-repeat: no-repeat;
+        }
+
+        .calendar-status {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 10px;
+            background: rgba(75, 85, 99, 0.3);
+            border: 1px solid #4b5563;
+            border-radius: 5px;
+            color: #9ca3af;
+            font-size: 11px;
+            font-weight: 600;
+            display: none;
+            margin-bottom: 0;
+            margin-top: 8px;
+        }
+
+        .calendar-status.show {
+            display: flex;
+        }
+
+        .calendar-status-dot {
+            width: 5px;
+            height: 5px;
+            background: #6b7280;
+            border-radius: 50%;
+        }
+
+        .calendar-instructions {
+            background: transparent;
+            border: none;
+            border-radius: 0;
+            padding: 0;
+            margin-top: 0;
+            color: #64748b;
+            font-size: 12px;
+            line-height: 1.5;
+            display: none;
+        }
+
+        .calendar-instructions strong {
+            display: block;
+            margin-bottom: 0;
+            color: #0f172a;
+            font-weight: 600;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 980px) {
+            .booking-container {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+
+            .time-slots {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .calendar-section {
+                width: 260px;
+                bottom: 20px;
+                right: 20px;
+                padding: 10px 12px;
+            }
+        }
+
+        @media (max-width: 560px) {
+            .booking-hero h1 {
+                font-size: 28px;
+            }
+
+            .teacher-card {
+                flex-direction: column;
+            }
+
+            .teacher-avatar {
+                width: 100%;
+                height: 200px;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .time-slots {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .calendar-section {
+                width: 250px;
+                bottom: 20px;
+                right: 20px;
+                padding: 10px 12px;
+            }
+
+            .calendar-section h3 {
+                font-size: 13px;
+                margin-bottom: 6px;
+            }
+
+            .calendar-info {
+                margin-bottom: 6px;
+            }
+
+            .calendar-info p {
+                font-size: 11px;
+            }
+
+            .google-calendar-btn {
+                padding: 6px 10px;
+                font-size: 10px;
+                margin-bottom: 6px;
+            }
+
+            .google-icon {
+                width: 11px;
+                height: 11px;
+            }
+
+            .calendar-status {
+                padding: 5px 8px;
+                font-size: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="nav" aria-label="Main">
+        <div class="nav__inner">
+            <a class="brand" href="index.html">
+                <span class="brand__logo" aria-hidden="true"></span>
+                <span class="brand__name">hola<span class="brand__tm">™</span></span>
+            </a>
+
+            <div class="menu" role="menubar" aria-label="Primary">
+                <a href="index.html">Home</a>
+                <a href="#teachers">Profesores</a>
+                <a href="#about">Sobre Nosotros</a>
+            </div>
+
+            <div class="socials" aria-label="Redes sociales">
+                <a class="bubble" href="#" aria-label="Instagram">
+                    <svg viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="5" stroke="currentColor" stroke-width="1.4"/><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg>
+                </a>
+                <a class="bubble" href="#" aria-label="Twitter">
+                    <svg viewBox="0 0 24 24" fill="none"><path d="M4 4l7 8.5L6.5 20 20 8.5 13.5 20" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </a>
+            </div>
+
+            <button class="burger" id="burger" aria-label="Abrir menú" aria-expanded="false" aria-controls="drawer">
+                <svg viewBox="0 0 24 24" fill="none"><path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+            </button>
+        </div>
+    </nav>
+
+    <main>
+        <section class="booking-hero" data-aos="fade-up" data-aos-duration="600">
+            <h1>Agendar tu Tutoría</h1>
+            <p>Selecciona un profesor, elige la fecha y hora, ¡y comienza a aprender!</p>
+        </section>
+
+        <div class="booking-container">
+            <!-- Sección de Profesores -->
+            <section class="teachers-section" data-aos="fade-right" data-aos-duration="600">
+                <h2>Elige tu Profesor</h2>
+
+                <!-- Barra de búsqueda -->
+                <div class="search-bar">
+                    <div class="search-input-wrapper">
+                        <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <path d="m21 21-4.35-4.35"></path>
+                        </svg>
+                        <input 
+                            type="text" 
+                            id="searchInput" 
+                            placeholder="Buscar por materia..."
+                            autocomplete="off"
+                        >
+                    </div>
+                </div>
+
+                <!-- Lista de profesores -->
+                <div class="teachers-list" id="teachersList">
+                    <div class="loading">
+                        <div class="loading-spinner"></div>
+                        <p>Cargando profesores...</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Formulario de Reserva -->
+            <section class="booking-form-section" data-aos="fade-left" data-aos-duration="600">
+                <h2>Detalles de la Tutoría</h2>
+
+                <form id="bookingForm">
+                    <input type="hidden" id="selectedTeacher" value="">
+
+                    <div class="form-group">
+                        <label for="studentName">Tu Nombre *</label>
+                        <input type="text" id="studentName" name="studentName" required placeholder="Juan Pérez">
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="studentEmail">Email *</label>
+                            <input type="email" id="studentEmail" name="studentEmail" required placeholder="tu@email.com">
+                        </div>
+                        <div class="form-group">
+                            <label for="studentPhone">Teléfono</label>
+                            <input type="tel" id="studentPhone" name="studentPhone" placeholder="+57 300 123 4567">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="bookingDate">Fecha *</label>
+                            <input type="date" id="bookingDate" name="bookingDate" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="bookingDuration">Duración *</label>
+                            <select id="bookingDuration" name="bookingDuration" required>
+                                <option value="">Selecciona duración</option>
+                                <option value="30">30 minutos - $15</option>
+                                <option value="60">1 hora - $25</option>
+                                <option value="90">1.5 horas - $35</option>
+                                <option value="120">2 horas - $45</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Hora Preferida *</label>
+                        <div class="time-slots">
+                            <div class="time-slot" onclick="selectTime(this, '09:00')">09:00 AM</div>
+                            <div class="time-slot" onclick="selectTime(this, '10:00')">10:00 AM</div>
+                            <div class="time-slot" onclick="selectTime(this, '11:00')">11:00 AM</div>
+                            <div class="time-slot" onclick="selectTime(this, '02:00')">02:00 PM</div>
+                            <div class="time-slot" onclick="selectTime(this, '03:00')">03:00 PM</div>
+                            <div class="time-slot" onclick="selectTime(this, '04:00')">04:00 PM</div>
+                        </div>
+                        <input type="hidden" id="selectedTime" value="">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="notes">Notas Adicionales</label>
+                        <textarea id="notes" name="notes" placeholder="Ej: Necesito ayuda con cálculo integral..."></textarea>
+                    </div>
+
+                    <div class="form-group" style="flex-direction: row; align-items: center; gap: 12px;">
+                        <input type="checkbox" id="terms" name="terms" required>
+                        <label for="terms" style="margin: 0;">Acepto los términos y condiciones *</label>
+                    </div>
+
+                    <button type="submit" class="booking-submit">
+                        <span class="button_top">Agendar Tutoría</span>
+                    </button>
+                </form>
+            </section>
+        </div>
+    </main>
+
+    <!-- Success Modal -->
+    <div class="success-modal" id="successModal">
+        <div class="success-content">
+            <div class="success-icon">✓</div>
+            <h2>¡Tutoría Agendada!</h2>
+            <p id="successText">Tu tutoría ha sido programada correctamente. Recibirás un email de confirmación pronto.</p>
+            <button onclick="redirectHome()" class="booking-submit" style="margin-top: 24px;">
+                <span class="button_top">Volver al Inicio</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Google Calendar Floating Widget -->
+    <section class="calendar-section">
+        <button class="calendar-close-btn" onclick="closeCalendarWidget()">✕</button>
+        
+        <h3>📅 Google Calendar</h3>
+        
+        <div class="calendar-info">
+            <p><strong>Conecta tu Google Calendar</strong> para que las tutorías se agreguen automáticamente.</p>
+        </div>
+
+        <div class="calendar-actions">
+            <button id="googleCalendarBtn" class="google-calendar-btn" onclick="handleGoogleCalendarAuth()">
+                <span class="google-icon"></span>
+                <span id="btnText">Google Calendar</span>
+            </button>
+
+            <button class="calendar-reminder-btn" onclick="setCalendarReminder()" title="Recordarme después">⏰</button>
+        </div>
+
+        <div class="calendar-status" id="calendarStatus">
+            <span class="calendar-status-dot"></span>
+            <span id="statusText">✓ Conectado a Google Calendar</span>
+        </div>
+    </section>
+
+    <footer class="footer">
+      <div class="footer__inner">
+
+        <!-- COLUMNA 1 -->
+        <div class="footer__brand">
+          <div class="brand__logo"></div>
+          <ul>
+            <li><a href="#">About</a></li>
+            <li><a href="#">Features</a></li>
+            <li><a href="#">Pricing</a></li>
+            <li><a href="#">Careers</a></li>
+            <li><a href="#">Help</a></li>
+            <li><a href="#">Privacy Policy</a></li>
+          </ul>
+          <p class="copy">© 2025 Landify UI Kit. All rights reserved.</p>
+        </div>
+
+        <!-- COLUMNA 2 -->
+        <div class="footer__col">
+          <h4>Product</h4>
+          <ul>
+            <li><a href="#">Overview</a></li>
+            <li><a href="#">Features</a></li>
+            <li><a href="#">Tutorials</a></li>
+            <li><a href="#">Pricing</a></li>
+            <li><a href="#">Releases</a></li>
+          </ul>
+        </div>
+
+        <!-- COLUMNA 3 -->
+        <div class="footer__col">
+          <h4>Company</h4>
+          <ul>
+            <li><a href="#">About</a></li>
+            <li><a href="#">Press</a></li>
+            <li><a href="#">Careers</a></li>
+            <li><a href="#">Contact</a></li>
+            <li><a href="#">Partners</a></li>
+          </ul>
+        </div>
+
+        <!-- COLUMNA 4 -->
+        <div class="footer__col">
+          <h4>Support</h4>
+          <ul>
+            <li><a href="#">Help Center</a></li>
+            <li><a href="#">Terms of service</a></li>
+            <li><a href="#">Legal</a></li>
+            <li><a href="#">Privacy Policy</a></li>
+            <li><a href="#">Status</a></li>
+          </ul>
+        </div>
+
+      </div>
+    </footer>
+
+    <script src="scripts.js"></script>
+    <!-- Google Calendar API -->
+    <script async defer src="https://apis.google.com/js/api.js"></script>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <script>
+        // Configuración de Google Calendar API
+        const GOOGLE_CLIENT_ID = '251179100365-b680nv1a95cbl309bpsndcf1oa8o4hgd.apps.googleusercontent.com'; // Reemplazar con tu Client ID
+        const GOOGLE_API_KEY = 'AIzaSyDXMMwMa9aEKy7Y7iZM2yeFt5DMBQJAcUY'; // Reemplazar con tu API Key
+        const DISCOVERY_DOCS = ['https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest'];
+        const SCOPES = 'https://www.googleapis.com/auth/calendar';
+
+        let googleAuthToken = null;
+        let googleCalendarConnected = false;
+
+        // Inicializar Google API
+        function initGoogleCalendar() {
+            gapi.load('client:auth2', () => {
+                gapi.client.init({
+                    apiKey: GOOGLE_API_KEY,
+                    clientId: GOOGLE_CLIENT_ID,
+                    discoveryDocs: DISCOVERY_DOCS,
+                    scope: SCOPES
+                }).then(() => {
+                    // Verificar si ya está autenticado
+                    const auth2 = gapi.auth2.getAuthInstance();
+                    if (auth2.isSignedIn.get()) {
+                        googleAuthToken = auth2.currentUser.get().getAuthResponse().id_token;
+                        googleCalendarConnected = true;
+                        updateCalendarStatus(true);
+                    }
+                }).catch(error => {
+                    console.error('Error inicializando Google API:', error);
+                });
+            });
+        }
+
+        // Manejar autenticación con Google Calendar
+        function handleGoogleCalendarAuth() {
+            if (googleCalendarConnected) {
+                // Desconectar
+                const auth2 = gapi.auth2.getAuthInstance();
+                auth2.signOut().then(() => {
+                    googleCalendarConnected = false;
+                    googleAuthToken = null;
+                    updateCalendarStatus(false);
+                });
+                return;
+            }
+
+            // Conectar
+            const auth2 = gapi.auth2.getAuthInstance();
+            auth2.signIn().then(googleUser => {
+                googleAuthToken = googleUser.getAuthResponse().id_token;
+                googleCalendarConnected = true;
+                updateCalendarStatus(true);
+            }).catch(error => {
+                console.error('Error al autenticar con Google:', error);
+                alert('Error al conectar con Google Calendar');
+            });
+        }
+
+        // Actualizar estado del calendario
+        function updateCalendarStatus(connected) {
+            const btn = document.getElementById('googleCalendarBtn');
+            const status = document.getElementById('calendarStatus');
+            const btnText = document.getElementById('btnText');
+            const statusText = document.getElementById('statusText');
+
+            if (connected) {
+                btn.classList.add('connected');
+                btnText.textContent = 'Conectado';
+                status.classList.add('show');
+                statusText.textContent = '✓ Conectado a Google Calendar';
+            } else {
+                btn.classList.remove('connected');
+                btnText.textContent = 'Google Calendar';
+                status.classList.remove('show');
+            }
+        }
+
+        // Agregar evento a Google Calendar
+        async function addEventToGoogleCalendar(eventDetails) {
+            if (!googleCalendarConnected) {
+                console.log('Google Calendar no está conectado');
+                return false;
+            }
+
+            try {
+                const event = {
+                    'summary': `Tutoría con ${eventDetails.teacherName}`,
+                    'description': `Materia: ${eventDetails.subject}\nNota: ${eventDetails.notes || 'Sin notas'}`,
+                    'start': {
+                        'dateTime': eventDetails.startTime,
+                        'timeZone': 'America/Bogota'
+                    },
+                    'end': {
+                        'dateTime': eventDetails.endTime,
+                        'timeZone': 'America/Bogota'
+                    },
+                    'location': 'Virtual',
+                    'reminders': {
+                        'useDefault': false,
+                        'overrides': [
+                            {'method': 'email', 'minutes': 24 * 60},
+                            {'method': 'popup', 'minutes': 30}
+                        ]
+                    }
+                };
+
+                const request = gapi.client.calendar.events.insert({
+                    'calendarId': 'primary',
+                    'resource': event
+                });
+
+                await request;
+                console.log('Evento agregado a Google Calendar');
+                return true;
+            } catch (error) {
+                console.error('Error al agregar evento a Google Calendar:', error);
+                return false;
+            }
+        }
+
+        // Inicializar cuando DOM está listo
+        document.addEventListener('DOMContentLoaded', initGoogleCalendar);
+
+        // Cerrar widget de Google Calendar
+        function closeCalendarWidget() {
+            const widget = document.querySelector('.calendar-section');
+            widget.style.animation = 'slideOutDown 0.3s ease-out forwards';
+            setTimeout(() => {
+                widget.style.display = 'none';
+                localStorage.setItem('calendarWidgetClosed', 'true');
+            }, 300);
+        }
+
+        // Establecer recordatorio
+        function setCalendarReminder() {
+            const reminderTime = prompt('¿En cuántos minutos quieres que te recuerde? (ej: 30)', '30');
+            if (reminderTime && !isNaN(reminderTime)) {
+                const minutes = parseInt(reminderTime);
+                const widget = document.querySelector('.calendar-section');
+                widget.style.animation = 'slideOutDown 0.3s ease-out forwards';
+                setTimeout(() => {
+                    widget.style.display = 'none';
+                    localStorage.setItem('calendarReminderTime', Date.now() + (minutes * 60 * 1000));
+                }, 300);
+            }
+        }
+
+        // Agregar animación de salida
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideOutDown {
+                from {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+                to {
+                    opacity: 0;
+                    transform: translateY(20px);
+                }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Verificar si widget debe estar cerrado
+        window.addEventListener('load', () => {
+            if (localStorage.getItem('calendarWidgetClosed') === 'true') {
+                document.querySelector('.calendar-section').style.display = 'none';
+            }
+            
+            // Verificar recordatorio
+            const reminderTime = localStorage.getItem('calendarReminderTime');
+            if (reminderTime && Date.now() >= parseInt(reminderTime)) {
+                localStorage.removeItem('calendarReminderTime');
+                localStorage.removeItem('calendarWidgetClosed');
+                document.querySelector('.calendar-section').style.display = 'block';
+                document.querySelector('.calendar-section').style.animation = 'slideInUp 0.4s ease-out';
+            }
+        });
+
+        // Detectar puerto automáticamente para API
+        const API_PORT = window.location.hostname === 'localhost' ? '3001' : window.location.port;
+        const API_URL = `http://localhost:3001/api`;
+        let allTeachers = [];
+
+        AOS.init({
+            duration: 800,
+            easing: 'ease-in-out',
+            once: true,
+            offset: 100
+        });
+
+        // Set minimum date to today
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('bookingDate').setAttribute('min', today);
+
+        // Cargar profesores al iniciar
+        async function loadTeachers() {
+            try {
+                const response = await fetch(`${API_URL}/teachers`);
+                const data = await response.json();
+                allTeachers = data.teachers || data;
+                
+                // Cargar horarios disponibles de profesores
+                await loadTeacherSchedules();
+                
+                displayTeachers(allTeachers);
+            } catch (error) {
+                console.error('Error al cargar profesores:', error);
+                document.getElementById('teachersList').innerHTML = 
+                    '<div class="loading"><p>Error al cargar los profesores. Por favor intenta más tarde.</p></div>';
+            }
+        }
+
+        // Cargar horarios disponibles desde el servidor
+        async function loadTeacherSchedules() {
+            try {
+                const response = await fetch(`${API_URL}/teacher/all-schedules`);
+                const schedules = await response.json();
+                
+                // Guardar en sessionStorage para usarlo después
+                sessionStorage.setItem('teacherSchedules', JSON.stringify(schedules));
+                
+                console.log('Horarios de profesores cargados:', schedules);
+            } catch (error) {
+                console.error('Error al cargar horarios:', error);
+            }
+        }
+
+        // Mostrar profesores en la lista
+        function displayTeachers(teachers) {
+            const teachersList = document.getElementById('teachersList');
+            
+            if (teachers.length === 0) {
+                teachersList.innerHTML = '<div class="loading"><p>No se encontraron profesores</p></div>';
+                return;
+            }
+
+            teachersList.innerHTML = teachers.map(teacher => `
+                <div class="teacher-card" onclick="selectTeacher(this, '${teacher.id}', '${teacher.name}')">
+                    <img src="${teacher.image}" alt="${teacher.name}" class="teacher-avatar">
+                    <div class="teacher-info">
+                        <h3>${teacher.name}</h3>
+                        <p>${teacher.specialty}</p>
+                        <span class="teacher-subject">${teacher.subject}</span>
+                        <div class="teacher-rating">
+                            <span>★★★★★</span> ${teacher.rating} (${teacher.reviews} reseñas)
+                        </div>
+                        <p style="margin-top: 8px; font-size: 12px; color: #06b6d4; font-weight: 600;">$${teacher.price}/hora</p>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Buscar profesores por materia
+        function searchTeachers(query) {
+            if (!query.trim()) {
+                displayTeachers(allTeachers);
+                return;
+            }
+
+            const filtered = allTeachers.filter(teacher => 
+                teacher.subject.toLowerCase().includes(query.toLowerCase()) ||
+                teacher.specialty.toLowerCase().includes(query.toLowerCase()) ||
+                teacher.name.toLowerCase().includes(query.toLowerCase())
+            );
+
+            displayTeachers(filtered);
+        }
+
+        // Event listener para búsqueda
+        document.getElementById('searchInput').addEventListener('input', function(e) {
+            searchTeachers(e.target.value);
+        });
+
+        function selectTeacher(element, teacherId, teacherName) {
+            // Remove selected class from all cards
+            document.querySelectorAll('.teacher-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            // Add selected class to clicked card
+            element.classList.add('selected');
+            // Store selected teacher
+            document.getElementById('selectedTeacher').value = teacherName;
+        }
+
+        function selectTime(element, time) {
+            // Remove selected class from all time slots
+            document.querySelectorAll('.time-slot').forEach(slot => {
+                slot.classList.remove('selected');
+            });
+            // Add selected class to clicked slot
+            element.classList.add('selected');
+            // Store selected time
+            document.getElementById('selectedTime').value = time;
+        }
+
+        document.getElementById('bookingForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const teacher = document.getElementById('selectedTeacher').value;
+            const studentName = document.getElementById('studentName').value;
+            const time = document.getElementById('selectedTime').value;
+            const date = document.getElementById('bookingDate').value;
+            const duration = document.getElementById('bookingDuration').value;
+            const notes = document.getElementById('notes').value;
+
+            if (!teacher) {
+                alert('Por favor selecciona un profesor');
+                return;
+            }
+            if (!time) {
+                alert('Por favor selecciona una hora');
+                return;
+            }
+
+            // Preparar datos del evento para Google Calendar
+            const [year, month, day] = date.split('-');
+            const [hours, minutes] = time.split(':');
+            const startDateTime = `${year}-${month}-${day}T${hours}:${minutes}:00`;
+            const endHours = parseInt(hours) + Math.floor(parseInt(duration) / 60);
+            const endMinutes = parseInt(minutes) + (parseInt(duration) % 60);
+            const endDateTime = `${year}-${month}-${day}T${endHours}:${endMinutes}:00`;
+
+            const eventDetails = {
+                teacherName: teacher,
+                subject: 'Tutoría',
+                notes: notes,
+                startTime: startDateTime,
+                endTime: endDateTime
+            };
+
+            // Agregar a Google Calendar si está conectado
+            if (googleCalendarConnected) {
+                addEventToGoogleCalendar(eventDetails);
+            }
+
+            // Show success modal
+            document.getElementById('successModal').classList.add('show');
+            document.getElementById('successText').textContent = 
+                `Tutoría con ${teacher} agendada para ${studentName}. Recibirás confirmación en tu email.`;
+
+            // Reset form
+            setTimeout(() => {
+                this.reset();
+                document.querySelectorAll('.teacher-card').forEach(card => {
+                    card.classList.remove('selected');
+                });
+                document.querySelectorAll('.time-slot').forEach(slot => {
+                    slot.classList.remove('selected');
+                });
+            }, 300);
+        });
+
+        function redirectHome() {
+            window.location.href = 'index.html';
+        }
+
+        // Cargar profesores cuando se carga la página
+        window.addEventListener('DOMContentLoaded', loadTeachers);
+    </script>
+</body>
+</html>
